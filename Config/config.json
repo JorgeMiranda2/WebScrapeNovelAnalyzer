@@ -1,0 +1,32 @@
+{
+"user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 OPR/100.0.0.0",
+"websites":{
+    "web_novel_site":{
+        "website_name":"Novel Updates",
+        "work_type":"Novel",
+        "url_library":"https://www.novelupdates.com",
+        "cookies_file":"/novelupdates.cookies"
+    },
+    "web_manga_site":{
+        "website_name":"TuMangaOnline",
+        "work_type":"Manga",
+        "url_library":"",
+        "cookies_file":"/tumangaonline.cookies"
+    },
+    "web_anime_site":{
+        "website_name":"MyAnimeList",
+        "work_type":"Anime",
+        "url_library":"",
+        "cookies_file":"/myanimelist.cookies"
+    }
+},
+"storage_params": {
+    "storage_path": "/ruta/de/almacenamiento",
+    "output_format": "csv"
+    },
+    "flow_control": {
+    "request_interval_seconds": 2,
+    "timeout_seconds": 10
+    },
+"debug_mode": false
+}
