@@ -130,6 +130,6 @@ class Novels_Scraping(Base_Scraping):
         pass
         
         
-novela = Novels_Scraping("Fineslow","jemc1410")
+novela = Novels_Scraping("prueba","prueba")
 novela.execute()
 
