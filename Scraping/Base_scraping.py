@@ -28,7 +28,7 @@ class Base_Scraping(ABC):
             self.agent = json_data["user_agent"]
             self.timeout = json_data["flow_control"]["timeout_seconds"]
             self.request_intervals = json_data["flow_control"]["request_interval_seconds"]
-            self.info = None
+            self.data = []
         except KeyError as e:
             # Handle Exceptions and showing error params
             print(f"Error: The key {e} is not in the json file.")
@@ -70,12 +70,20 @@ class Base_Scraping(ABC):
         pickle.dump(self.driver.get_cookies(), open(self.cookies_file, "wb"))
         
     @abstractmethod
-    def do_web_scraping(self):
+    def obtain_genres(self):
         pass
     
-    # Method to get the work tittle
     @abstractmethod
-    def obtain_tittle(self):
+    def obtain_tags(self):
+        pass
+    
+    @abstractmethod
+    def obtain_image(self):
+        pass
+    
+    # Method to get the work title
+    @abstractmethod
+    def obtain_title(self):
         pass
     # Method to retrieve the work languaje origin   
     @abstractmethod
