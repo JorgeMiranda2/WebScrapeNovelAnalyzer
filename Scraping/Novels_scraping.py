@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.keys import Keys  
 import undetected_chromedriver as uc 
 from bs4 import BeautifulSoup
+from selenium.common.exceptions import TimeoutException
 import time
 from selenium.common.exceptions import StaleElementReferenceException
 import threading
@@ -95,7 +96,7 @@ class Novels_Scraping(Base_Scraping):
         self.login()
         self.go_to_list()
         self.browse_sections_list()
-        
+        self.driver.quit()
     
     
 
@@ -105,26 +106,27 @@ class Novels_Scraping(Base_Scraping):
             elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@id='cssmenu']/ul[not(@class)]/li/a")))
             elements_works = [work.get_attribute("href") for work in elements_works]
             work_links = elements_works[1:]
-            print(work_links)
             print("sections charged")
-            print(work_links)
+          
             
             for i, link in enumerate(work_links):
                 print(len(work_links))
                 try:
-                    self.driver.get(link)
+                    try:
+                        self.driver.get(link)
+                    except TimeoutException as e:
+                        print("Page load Timeout Occured ... moving to next item !!!")
                     self.browse_work_pages()
                     print("alcanza")
                     # Actualizar la lista de elementos después de volver atrás
                     elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@id='cssmenu']/ul[not(@class)]/li/a")))
                     elements_works = [work.get_attribute("href") for work in elements_works]
                     work_links = elements_works[1:]
-                    print("nuevo arr: " + str(len(work_links)))
                     
                     
                 except StaleElementReferenceException:
                     # Manejar la excepción StaleElementReferenceException y continuar con el siguiente enlace
-                    print(f"Elemento estalecido en el enlace {i}, continuando con el siguiente.")
+                    print(f"element not working in {i}, passing to the next.")
                     continue
                 
         except Exception as e:
@@ -135,14 +137,18 @@ class Novels_Scraping(Base_Scraping):
                 
     def browse_work_pages(self):
         try:
+            print("Trying to get elements from every work in the list")
             # Obtener todas las URL de los trabajos
             elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//td[@class='title_shorten']/a")))
             work_links = [work.get_attribute("href") for work in elements_works]
-            print("elements charged")
             
             # Obtain every work and do the web scraping
             for link in work_links:
-                self.driver.get(link)  # Volver a la página del trabajo
+                try:
+                    self.driver.get(link)  # Volver a la página del trabajo
+                except TimeoutException as e:
+                    print("Page load Timeout Occured ... moving to next item !!!")
+                    
                 self.do_web_scraping()
                 self.driver.back()  # Regresar a la lista de trabajos
 
@@ -167,11 +173,9 @@ class Novels_Scraping(Base_Scraping):
     
     # Method to login in the page
     def login(self,time_max=10):
-        print("1")
+        print("trying to login in the page")
         self.check_cookies()
-        print("2")
         self.go_to_page()
-        print("3")
         login = self.login_verifier()
         print("4")
         if (not login):

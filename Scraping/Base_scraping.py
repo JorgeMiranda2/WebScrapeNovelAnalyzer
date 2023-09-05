@@ -43,8 +43,14 @@ class Base_Scraping(ABC):
             options = webdriver.ChromeOptions()
             options.add_argument("--disable-images")
             options.add_argument('--pageLoadStrategy=none')
-            self.driver = uc.Chrome(headless=False, log_level=3, options=options)
+            self.driver = uc.Chrome(headless=False, log_level=1, options=options)
+            try:
+                self.driver.set_page_load_timeout(4)
+            except Exception as e:
+                print(e)
+      
             self.driver.get(self.url_library)
+          
             self.wait = WebDriverWait(self.driver, 3)
             print("Connected")
         except KeyError as e:
@@ -67,12 +73,15 @@ class Base_Scraping(ABC):
             return False
                   
     def go_to_list(self):
-        print("--list_page--")
-        self.driver.get(self.list_path) 
+        self.driver.execute_script("setTimeout(function() { window.stop(); }, 2000);") 
+        self.driver.get(self.list_path)
+        
        
                   
     def go_to_page(self):
-        self.driver.get(self.url_library)                 
+        self.driver.execute_script("setTimeout(function() { window.stop(); }, 2000);") 
+        self.driver.get(self.url_library)
+                        
             
     def save_cookies(self):
         pickle.dump(self.driver.get_cookies(), open(self.cookies_file, "wb"))
