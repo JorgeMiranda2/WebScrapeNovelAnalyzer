@@ -64,8 +64,9 @@ class Novels_Scraping(Base_Scraping):
     
     
     # Method to do the diferents operations from the specific work and get the scraping data
-    def obtain_work_data(self):
-        pass
+    def obtain_year(self):
+        year = self.soup.find("div", id="edityear").text.strip()
+        return year
     
     def obtain_tags(self):
         elements = []
@@ -85,7 +86,7 @@ class Novels_Scraping(Base_Scraping):
         self.driver.get("https://www.novelupdates.com/series/i-became-a-flashing-genius-at-the-magic-academy/")
         soup = BeautifulSoup(self.driver.page_source, "html.parser")
         self.soup = soup
-        self.browse_section_lists()
+        self.browse_sections_list()
         
         
         
@@ -97,6 +98,7 @@ class Novels_Scraping(Base_Scraping):
         self.go_to_list()
         self.browse_sections_list()
         self.driver.quit()
+        print(self.data)
     
     
 
@@ -116,6 +118,7 @@ class Novels_Scraping(Base_Scraping):
                         self.driver.get(link)
                     except TimeoutException as e:
                         print("Page load Timeout Occured ... moving to next item !!!")
+                        time.sleep(2)
                     self.browse_work_pages()
                     print("alcanza")
                     # Actualizar la lista de elementos después de volver atrás
@@ -148,6 +151,7 @@ class Novels_Scraping(Base_Scraping):
                     self.driver.get(link)  # Volver a la página del trabajo
                 except TimeoutException as e:
                     print("Page load Timeout Occured ... moving to next item !!!")
+                    time.sleep(1)
                     
                 self.do_web_scraping()
                 self.driver.back()  # Regresar a la lista de trabajos
@@ -159,13 +163,15 @@ class Novels_Scraping(Base_Scraping):
     def do_web_scraping(self):
         try: 
             self.soup = BeautifulSoup(self.driver.page_source, "html.parser")
-            self.obtain_title()
-            self.obtain_author()
-            self.obtain_languaje()
-            self.obtain_image()
-            self.obtain_tags()
-            self.obtain_genres()
-            self.obtain_work_data()
+            self.data.append({
+            "Title":self.obtain_title(),
+            "Author":self.obtain_author(),
+            "Languaje":self.obtain_languaje(),
+            "Image":self.obtain_image(),
+            "Tags":self.obtain_tags(),
+            "Genres":self.obtain_genres(),
+            "Year":self.obtain_year(),
+            })
         except Exception as e:
             print(f"An error has occurred during web scraping: {e}")
     

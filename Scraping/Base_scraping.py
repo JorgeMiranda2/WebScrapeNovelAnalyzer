@@ -45,7 +45,7 @@ class Base_Scraping(ABC):
             options.add_argument('--pageLoadStrategy=none')
             self.driver = uc.Chrome(headless=False, log_level=1, options=options)
             try:
-                self.driver.set_page_load_timeout(4)
+                self.driver.set_page_load_timeout(5)
             except Exception as e:
                 print(e)
       
@@ -113,7 +113,7 @@ class Base_Scraping(ABC):
     
     # Method to do the diferents operations from the specific work and get the scraping data
     @abstractmethod
-    def obtain_work_data(self):
+    def obtain_year(self):
         pass
     
     # Method to do the diferents operations and get the total page scraping data
