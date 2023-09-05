@@ -10,6 +10,8 @@ from selenium.webdriver.common.keys import Keys
 import undetected_chromedriver as uc 
 from bs4 import BeautifulSoup
 import time
+from selenium.common.exceptions import StaleElementReferenceException
+import threading
 # Open the JSON file and load the data into a Python variable
 with open('Config/config.json', 'r') as json_file:
     json_data = json.load(json_file)
@@ -82,7 +84,7 @@ class Novels_Scraping(Base_Scraping):
         self.driver.get("https://www.novelupdates.com/series/i-became-a-flashing-genius-at-the-magic-academy/")
         soup = BeautifulSoup(self.driver.page_source, "html.parser")
         self.soup = soup
-        self.obtain_rating()
+        self.browse_section_lists()
         
         
         
@@ -92,14 +94,45 @@ class Novels_Scraping(Base_Scraping):
         self.connect()
         self.login()
         self.go_to_list()
-        self.browse_work_pages()
+        self.browse_sections_list()
         
-    def go_to_list(self):
-        print("--list_page--")
-        e = self.wait.until(ec.element_to_be_clickable((By.XPATH, "//a[text()='Reading List']")))
-        e.click()
-        time.sleep(1)   
-        
+    
+    
+
+    def browse_sections_list(self):
+        try:
+            self.soup = BeautifulSoup(self.driver.page_source, "html.parser") 
+            elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@id='cssmenu']/ul[not(@class)]/li/a")))
+            elements_works = [work.get_attribute("href") for work in elements_works]
+            work_links = elements_works[1:]
+            print(work_links)
+            print("sections charged")
+            print(work_links)
+            
+            for i, link in enumerate(work_links):
+                print(len(work_links))
+                try:
+                    self.driver.get(link)
+                    self.browse_work_pages()
+                    print("alcanza")
+                    # Actualizar la lista de elementos después de volver atrás
+                    elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@id='cssmenu']/ul[not(@class)]/li/a")))
+                    elements_works = [work.get_attribute("href") for work in elements_works]
+                    work_links = elements_works[1:]
+                    print("nuevo arr: " + str(len(work_links)))
+                    
+                    
+                except StaleElementReferenceException:
+                    # Manejar la excepción StaleElementReferenceException y continuar con el siguiente enlace
+                    print(f"Elemento estalecido en el enlace {i}, continuando con el siguiente.")
+                    continue
+                
+        except Exception as e:
+            print(f"Error en browse_sections_list: {e}")
+
+# Resto de tu código
+
+                
     def browse_work_pages(self):
         try:
             # Obtener todas las URL de los trabajos
@@ -111,16 +144,15 @@ class Novels_Scraping(Base_Scraping):
             for link in work_links:
                 self.driver.get(link)  # Volver a la página del trabajo
                 self.do_web_scraping()
-                self.go_to_list()  # Regresar a la lista de trabajos
+                self.driver.back()  # Regresar a la lista de trabajos
 
         except KeyError as e:
             print("Something went wrong when going through works pages")
             
             
     def do_web_scraping(self):
-        try:
-            soup = BeautifulSoup(self.driver.page_source, "html.parser")
-            self.soup = soup
+        try: 
+            self.soup = BeautifulSoup(self.driver.page_source, "html.parser")
             self.obtain_title()
             self.obtain_author()
             self.obtain_languaje()
@@ -134,16 +166,14 @@ class Novels_Scraping(Base_Scraping):
     
     
     # Method to login in the page
-    def login(self,time_max=15):
+    def login(self,time_max=10):
         print("1")
         self.check_cookies()
         print("2")
         self.go_to_page()
         print("3")
-        time.sleep(2)
-        print("4")
         login = self.login_verifier()
-        print("5")
+        print("4")
         if (not login):
             while time_max > 0:
                 try:    
@@ -167,13 +197,13 @@ class Novels_Scraping(Base_Scraping):
                 except KeyError as e:
                     print(f"error trying to logued: {e}")
                 time_max-=1
-    time.sleep(10)            
+                    
     
     # Method to validate if cookies exist and is logued
     def login_verifier(self):
         try:
-            e = self.driver.find_element(By.ID, "menu_right_item")
-            e.click() 
+            e = self.wait.until(ec.element_to_be_clickable((By.XPATH, "//span[@id='menu_right_item']")))
+            #e.click() 
             return True  
         except:
             return False    
@@ -190,5 +220,5 @@ class Novels_Scraping(Base_Scraping):
         
         
 novela = Novels_Scraping("prueba","prueba")
-novela.test_service()
+novela.execute()
 

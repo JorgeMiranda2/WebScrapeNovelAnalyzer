@@ -1,4 +1,5 @@
 import json
+from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 import undetected_chromedriver as uc 
 from abc import ABC, abstractmethod
@@ -28,6 +29,7 @@ class Base_Scraping(ABC):
             self.agent = json_data["user_agent"]
             self.timeout = json_data["flow_control"]["timeout_seconds"]
             self.request_intervals = json_data["flow_control"]["request_interval_seconds"]
+            self.list_path = json_data["websites"][f"{website_type}"]["list_path"]
             self.data = []
         except KeyError as e:
             # Handle Exceptions and showing error params
@@ -38,9 +40,12 @@ class Base_Scraping(ABC):
     def connect(self):
         try:
             print("Connecting...")
-            self.driver = uc.Chrome(headless=False, log_level=3)
+            options = webdriver.ChromeOptions()
+            options.add_argument("--disable-images")
+            options.add_argument('--pageLoadStrategy=none')
+            self.driver = uc.Chrome(headless=False, log_level=3, options=options)
             self.driver.get(self.url_library)
-            self.wait = WebDriverWait(self.driver, 30)
+            self.wait = WebDriverWait(self.driver, 3)
             print("Connected")
         except KeyError as e:
             print(f"Getting an error while connecting: {e}")
@@ -61,7 +66,10 @@ class Base_Scraping(ABC):
             print("not Checked")
             return False
                   
-                  
+    def go_to_list(self):
+        print("--list_page--")
+        self.driver.get(self.list_path) 
+       
                   
     def go_to_page(self):
         self.driver.get(self.url_library)                 

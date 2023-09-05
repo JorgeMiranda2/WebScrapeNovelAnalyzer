@@ -5,19 +5,22 @@
         "website_name":"Novel Updates",
         "work_type":"Novel",
         "url_library":"https://www.novelupdates.com",
-        "cookies_file":"/novelupdates.cookies"
+        "cookies_file":"/novelupdates.cookies",
+        "list_path":"https://www.novelupdates.com/reading-list/"
     },
     "web_manga_site":{
         "website_name":"TuMangaOnline",
         "work_type":"Manga",
         "url_library":"",
-        "cookies_file":"/tumangaonline.cookies"
+        "cookies_file":"/tumangaonline.cookies",
+        "list_path":"https://www.novelupdates.com/reading-list/"
     },
     "web_anime_site":{
         "website_name":"MyAnimeList",
         "work_type":"Anime",
         "url_library":"",
-        "cookies_file":"/myanimelist.cookies"
+        "cookies_file":"/myanimelist.cookies",
+        "list_path":"https://www.novelupdates.com/reading-list/"
     }
 },
 "storage_params": {
