@@ -1,10 +1,7 @@
 import json
-import sys
-from Base_scraping import Base_Scraping
-from selenium import webdriver
+from Convert_To_Csv import Convert_To_Csv 
+from Base_Scraping import Base_Scraping
 from selenium.webdriver.common.by import By  
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.keys import Keys  
 import undetected_chromedriver as uc 
@@ -12,7 +9,8 @@ from bs4 import BeautifulSoup
 from selenium.common.exceptions import TimeoutException
 import time
 from selenium.common.exceptions import StaleElementReferenceException
-import threading
+
+
 # Open the JSON file and load the data into a Python variable
 with open('Config/config.json', 'r') as json_file:
     json_data = json.load(json_file)
@@ -50,7 +48,7 @@ class Novels_Scraping(Base_Scraping):
         
         
     def obtain_rating(self):
-        element_text = self.soup.find("span",class_="uvotes").text.strip().split(",")[0][1:].translate(str.maketrans('', '', ' '))
+        element_text = self.soup.find("span",class_="uvotes").text.strip().split(",")[0][1:].translate(str.maketrans('', '', ' ')).strip()
         print(element_text)
         return element_text
     
@@ -76,7 +74,7 @@ class Novels_Scraping(Base_Scraping):
         return separator.join(elements)
     
     def obtain_image(self):
-        element = self.soup.find("div",class_="wpb_row").find("img").get("src")
+        element = self.soup.find("div",class_="wpb_row").find("img").get("src").strip()
         print(element)
         return element
     
@@ -99,6 +97,7 @@ class Novels_Scraping(Base_Scraping):
         self.browse_sections_list()
         self.driver.quit()
         print(self.data)
+        Convert_To_Csv(self.data, "Novels.csv")
     
     
 
@@ -151,7 +150,7 @@ class Novels_Scraping(Base_Scraping):
                     self.driver.get(link)  # Volver a la página del trabajo
                 except TimeoutException as e:
                     print("Page load Timeout Occured ... moving to next item !!!")
-                    time.sleep(1)
+                    time.sleep(2)
                     
                 self.do_web_scraping()
                 self.driver.back()  # Regresar a la lista de trabajos
@@ -189,13 +188,13 @@ class Novels_Scraping(Base_Scraping):
                 try:    
                     e = self.wait.until(ec.element_to_be_clickable((By.XPATH, "//a[text()='Login']")))
                     e.click()
-                    time.sleep(1)   
+                    time.sleep(2)   
                     e = self.wait.until(ec.element_to_be_clickable((By.ID, "user_login")))
                     e.send_keys(self.user)
-                    time.sleep(1)   
+                    time.sleep(2)   
                     e = self.wait.until(ec.element_to_be_clickable((By.ID, "user_pass")))
                     e.send_keys(self.password)
-                    time.sleep(1)   
+                    time.sleep(2)   
                     e = self.wait.until(ec.element_to_be_clickable((By.ID, "rememberme")))
                     if (not e.is_selected()):
                         e.click()
@@ -229,6 +228,6 @@ class Novels_Scraping(Base_Scraping):
         pass
         
         
-novela = Novels_Scraping("prueba","prueba")
-novela.execute()
+#novela = Novels_Scraping("prueba","prueba")
+#novela.execute()
 

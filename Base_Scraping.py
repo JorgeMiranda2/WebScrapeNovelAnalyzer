@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 import undetected_chromedriver as uc 
 from abc import ABC, abstractmethod
-import json
 import tempfile
 import os
 import pickle
@@ -45,7 +44,7 @@ class Base_Scraping(ABC):
             options.add_argument('--pageLoadStrategy=none')
             self.driver = uc.Chrome(headless=False, log_level=1, options=options)
             try:
-                self.driver.set_page_load_timeout(5)
+                self.driver.set_page_load_timeout(3)
             except Exception as e:
                 print(e)
       
