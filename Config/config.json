@@ -11,9 +11,9 @@
     "web_manga_site":{
         "website_name":"TuMangaOnline",
         "work_type":"Manga",
-        "url_library":"",
+        "url_library":"https://lectortmo.com",
         "cookies_file":"/tumangaonline.cookies",
-        "list_path":"https://www.novelupdates.com/reading-list/"
+        "list_path":"https://lectortmo.com/profile"
     },
     "web_anime_site":{
         "website_name":"MyAnimeList",

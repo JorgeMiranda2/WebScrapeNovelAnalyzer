@@ -5,6 +5,8 @@ import undetected_chromedriver as uc
 from abc import ABC, abstractmethod
 import tempfile
 import os
+from selenium.common.exceptions import TimeoutException
+import time
 import pickle
 # Open the JSON file and load the data into a Python variable
 with open('Config/config.json', 'r') as json_file:
@@ -48,7 +50,12 @@ class Base_Scraping(ABC):
             except Exception as e:
                 print(e)
       
-            self.driver.get(self.url_library)
+            try:
+                    self.driver.get(self.url_library)  # Volver a la página del trabajo
+            except TimeoutException as e:
+                print("Page load Timeout Occured ... moving to next item !!!")
+                time.sleep(2)
+            
           
             self.wait = WebDriverWait(self.driver, 3)
             print("Connected")
@@ -73,13 +80,21 @@ class Base_Scraping(ABC):
                   
     def go_to_list(self):
         self.driver.execute_script("setTimeout(function() { window.stop(); }, 2000);") 
-        self.driver.get(self.list_path)
+        try:
+            self.driver.get(self.list_path)  # Volver a la página del trabajo
+        except TimeoutException as e:
+            print("Page load Timeout Occured ... moving to next item !!!")
+            time.sleep(2)
         
        
                   
     def go_to_page(self):
         self.driver.execute_script("setTimeout(function() { window.stop(); }, 2000);") 
-        self.driver.get(self.url_library)
+        try:
+            self.driver.get(self.url_library)  # Volver a la página del trabajo
+        except TimeoutException as e:
+            print("Page load Timeout Occured ... moving to next item !!!")
+            time.sleep(2)
                         
             
     def save_cookies(self):
