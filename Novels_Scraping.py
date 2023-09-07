@@ -91,13 +91,16 @@ class Novels_Scraping(Base_Scraping):
         
     # Method to do the diferents operations and get the total page scraping data
     def execute(self):
-        self.connect()
-        self.login()
-        self.go_to_list()
-        self.browse_sections_list()
-        self.driver.quit()
-        print(self.data)
-        Convert_To_Csv(self.data, "Novels.csv")
+        try:
+            self.connect()
+            self.login()
+            self.go_to_list()
+            self.browse_sections_list()
+            print(self.data)
+            Convert_To_Csv(self.data, "Novels.csv")
+        except:
+            print("An error has ocurred in the process")
+        self.driver.close()
     
     
 
@@ -108,10 +111,10 @@ class Novels_Scraping(Base_Scraping):
             elements_works = [work.get_attribute("href") for work in elements_works]
             work_links = elements_works[1:]
             print("sections charged")
-          
+            print(work_links)
             
             for i, link in enumerate(work_links):
-                print(len(work_links))
+                
                 try:
                     try:
                         self.driver.get(link)
@@ -143,6 +146,8 @@ class Novels_Scraping(Base_Scraping):
             # Obtener todas las URL de los trabajos
             elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//td[@class='title_shorten']/a")))
             work_links = [work.get_attribute("href") for work in elements_works]
+            print("Getting Urls novels")
+            print(work_links)
             
             # Obtain every work and do the web scraping
             for link in work_links:
@@ -150,13 +155,17 @@ class Novels_Scraping(Base_Scraping):
                     self.driver.get(link)  # Volver a la página del trabajo
                 except TimeoutException as e:
                     print("Page load Timeout Occured ... moving to next item !!!")
-                    time.sleep(2)
+                    
                     
                 self.do_web_scraping()
-                self.driver.back()  # Regresar a la lista de trabajos
-
-        except KeyError as e:
-            print("Something went wrong when going through works pages")
+                try:
+                    self.driver.back()
+                except TimeoutException as e:
+                    print("Page load Timeout Occured ... moving to next item !!!")
+                    time.sleep(2)
+            
+        except Exception as e:
+            print(f"Something went wrong when going through works pages: {e}")
             
             
     def do_web_scraping(self):
@@ -170,6 +179,7 @@ class Novels_Scraping(Base_Scraping):
             "Tags":self.obtain_tags(),
             "Genres":self.obtain_genres(),
             "Year":self.obtain_year(),
+            "Rating":self.obtain_rating()
             })
         except Exception as e:
             print(f"An error has occurred during web scraping: {e}")

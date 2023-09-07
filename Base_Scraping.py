@@ -44,9 +44,9 @@ class Base_Scraping(ABC):
             options = webdriver.ChromeOptions()
             options.add_argument("--disable-images")
             options.add_argument('--pageLoadStrategy=none')
-            self.driver = uc.Chrome(headless=False, log_level=1, options=options)
+            self.driver = uc.Chrome(headless=True, log_level=1, options=options)
             try:
-                self.driver.set_page_load_timeout(3)
+                self.driver.set_page_load_timeout(5)
             except Exception as e:
                 print(e)
       
@@ -79,7 +79,7 @@ class Base_Scraping(ABC):
             return False
                   
     def go_to_list(self):
-        self.driver.execute_script("setTimeout(function() { window.stop(); }, 2000);") 
+        print("entering in list")
         try:
             self.driver.get(self.list_path)  # Volver a la página del trabajo
         except TimeoutException as e:

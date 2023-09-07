@@ -16,8 +16,9 @@ with open('Config/config.json', 'r') as json_file:
     json_data = json.load(json_file)
     
 class Mangas_Scraping(Base_Scraping):
-    def __init__(self, user, password): 
+    def __init__(self, user, password, idiom): 
         website_type = "web_manga_site"
+        self.idiom = idiom
         super().__init__(user, password, website_type)
    
     
@@ -25,12 +26,19 @@ class Mangas_Scraping(Base_Scraping):
              
     # get the work title
     def obtain_title(self):
-        element_text = self.soup.find("div",class_="seriestitlenu").text.strip()
+        element_text = self.soup.find("h1", class_="element-title my-2")
+        element_text = ''.join(element_text.find_all(text=True, recursive=False))
+        print(element_text)
+        return element_text
+    
+    def obtain_demography(self):
+        element_text = self.soup.find("div",class_="element-image my-2").find("div",class_="demography").text.strip()
         print(element_text)
         return element_text
     
     def obtain_work_year(self):
-        element_text = self.soup.find("div",id="edityear").text.strip()
+        element_text = self.soup.find("h1", class_="element-title my-2").find("small", class_="text-muted").text
+        element_text = element_text.translate(str.maketrans('', '', '()')).strip()
         print(element_text)
         return element_text
             
@@ -48,23 +56,34 @@ class Mangas_Scraping(Base_Scraping):
         
         
     def obtain_rating(self):
-        element_text = self.soup.find("span",class_="uvotes").text.strip().split(",")[0][1:].translate(str.maketrans('', '', ' ')).strip()
+        max_rating = 10
+        element_text = self.soup.find("div",class_="element-image my-2").find("div",class_="score").find("a").text.strip()
+        element_text += "/" + str(max_rating)
         print(element_text)
         return element_text
     
     def obtain_genres(self):
-        separator = ", "
-        elements_text = self.soup.find("div",id="seriesgenre").findAll("a",class_="genre")
-        
-        elements = [element.text.strip() for element in elements_text] 
-        print(separator.join(elements))
-        return separator.join(elements)
+        try:
+            separator = ", "
+            elements_text = self.soup.find("div",class_="col-12 col-md-9 element-header-content-text").findAll("a",class_="badge badge-primary py-2 px-4 mx-1 my-2")
+            
+            elements = [element.text.strip() for element in elements_text] 
+            print(separator.join(elements))
+            return separator.join(elements)
+        except:
+            print("error trying to get genres")
+            return None
     
     
     # Method to do the diferents operations from the specific work and get the scraping data
     def obtain_year(self):
-        year = self.soup.find("div", id="edityear").text.strip()
-        return year
+        try:
+            element_text = self.soup.find("h1", class_="element-title my-2").find("small", class_="text-muted").text
+            element_text = element_text.translate(str.maketrans('', '', '()')).strip()
+            print(element_text)
+            return element_text
+        except:
+            return None
     
     def obtain_tags(self):
         elements = []
@@ -74,9 +93,13 @@ class Mangas_Scraping(Base_Scraping):
         return separator.join(elements)
     
     def obtain_image(self):
-        element = self.soup.find("div",class_="wpb_row").find("img").get("src").strip()
-        print(element)
-        return element
+        try:
+            element = self.soup.find("div",class_="element-image my-2").find("img").get("src").strip()
+            print(element)
+            return element
+        except:
+            print("error trying to get image")
+            return None
     
     
     def test_service(self):
@@ -87,26 +110,62 @@ class Mangas_Scraping(Base_Scraping):
         self.browse_sections_list()
         
         
+    def browse_part_list(self):
         
+        while True:
+            try:
+                # Obtener todos los elementos <a> dentro del <nav> con class="flex justify-between"
+                elements = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//nav[@class='flex justify-between']/a")))
+                self.browse_work_pages()
+                # Iterar a través de los elementos y buscar el que tiene rel="next"
+                for element in elements:
+                    if element.get_attribute("rel") == "next":
+                        element.click()
+                        time.sleep(1)
+                        break  # Salir del bucle después de hacer clic en el elemento con rel="next"
+                else:
+                    print("Not found next button")
+                    break  # Salir del bucle principal si no se encuentra ningún elemento con rel="next"
+                
+            except:
+                print("Ocurrió un error o se alcanzó el final de la paginación")
+                break
+
         
     # Method to do the diferents operations and get the total page scraping data
     def execute(self):
-        self.connect()
-        self.login()
-        self.go_to_list()
-        self.browse_sections_list()
-        self.driver.quit()
-        print(self.data)
-        Convert_To_Csv(self.data, "Mangas.csv")
+        try:
+            self.connect()
+            self.login()
+            self.change_idiom_page()
+            self.go_to_list()
+            self.browse_sections_list()
+            print(self.data)
+            Convert_To_Csv(self.data, "Mangas.csv")
+        except Exception as e:
+            print(f"An error has ocurred in the process: {e}" )
+        self.driver.close()
     
-    
+    def change_idiom_page(self):
+        print("changing idiom")
+        time.sleep(1)
+        try:
+            e = self.wait.until(ec.element_to_be_clickable((By.XPATH, "//a[@id='navbarDropdownLanguage']")))
+            e.click()
+            e = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@class='dropdown-menu dropdown-menu-right show']/a/span")))
+            e[int(self.idiom)-1].click()
+            
+        except TimeoutException:
+            print("not found element at the estimated time")
 
     def browse_sections_list(self):
+        print("Searching for sections ")
         try:
+            time.sleep(1)
             self.soup = BeautifulSoup(self.driver.page_source, "html.parser") 
-            elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@id='cssmenu']/ul[not(@class)]/li/a")))
-            elements_works = [work.get_attribute("href") for work in elements_works]
-            work_links = elements_works[1:]
+            elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@class='d-flex element-header-bar-elements flex-row flex-wrap align-items-center']/div/a")))
+            work_links = [work.get_attribute("href") for work in elements_works]
+            
             print("sections charged")
           
             
@@ -116,21 +175,23 @@ class Mangas_Scraping(Base_Scraping):
                     try:
                         self.driver.get(link)
                     except TimeoutException as e:
-                        print("Page load Timeout Occured ... moving to next item !!!")
-                        time.sleep(2)
-                    self.browse_work_pages()
+                        print("Timeout, next item  !!!")
+                        
+                    
+                    #self.browse_work_pages()
+                    self.browse_part_list()
                     print("alcanza")
                     # Actualizar la lista de elementos después de volver atrás
-                    elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@id='cssmenu']/ul[not(@class)]/li/a")))
+                    elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@class='d-flex element-header-bar-elements flex-row flex-wrap align-items-center']/div/a")))
                     elements_works = [work.get_attribute("href") for work in elements_works]
-                    work_links = elements_works[1:]
+                    
                     
                     
                 except StaleElementReferenceException:
                     # Manejar la excepción StaleElementReferenceException y continuar con el siguiente enlace
                     print(f"element not working in {i}, passing to the next.")
                     continue
-                
+                time.sleep(1)
         except Exception as e:
             print(f"Error en browse_sections_list: {e}")
 
@@ -141,19 +202,26 @@ class Mangas_Scraping(Base_Scraping):
         try:
             print("Trying to get elements from every work in the list")
             # Obtener todas las URL de los trabajos
-            elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//td[@class='title_shorten']/a")))
+            elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@class='row']//div[@class='element  proyect-item col-6 col-sm-6 col-md-4 col-lg-3 mt-2  ']/a")))
             work_links = [work.get_attribute("href") for work in elements_works]
-            
+            print(work_links)
             # Obtain every work and do the web scraping
             for link in work_links:
                 try:
                     self.driver.get(link)  # Volver a la página del trabajo
                 except TimeoutException as e:
                     print("Page load Timeout Occured ... moving to next item !!!")
-                    time.sleep(2)
+                    time.sleep(1)
                     
                 self.do_web_scraping()
-                self.driver.back()  # Regresar a la lista de trabajos
+                time.sleep(5)
+                try:
+                    self.driver.back()
+                except TimeoutException as e:
+                    print("Page load Timeout Occured ... moving to next item !!!")
+                    time.sleep(2)
+       
+        
 
         except KeyError as e:
             print("Something went wrong when going through works pages")
@@ -164,10 +232,11 @@ class Mangas_Scraping(Base_Scraping):
             self.soup = BeautifulSoup(self.driver.page_source, "html.parser")
             self.data.append({
             "Title":self.obtain_title(),
-            "Author":self.obtain_author(),
-            "Languaje":self.obtain_languaje(),
+            #"Author":self.obtain_author(),
+            "Rating":self.obtain_rating(),
+            #"Languaje":self.obtain_languaje(),
             "Image":self.obtain_image(),
-            "Tags":self.obtain_tags(),
+            "Demography":self.obtain_demography(),
             "Genres":self.obtain_genres(),
             "Year":self.obtain_year(),
             })
@@ -181,6 +250,7 @@ class Mangas_Scraping(Base_Scraping):
         print("trying to login in the page")
         self.check_cookies()
         self.go_to_page()
+        time.sleep(1)
         login = self.login_verifier()
         print("4")
         if (not login):
@@ -227,6 +297,4 @@ class Mangas_Scraping(Base_Scraping):
         pass
         
         
-novela = Mangas_Scraping("a","b")
-novela.execute()
 
