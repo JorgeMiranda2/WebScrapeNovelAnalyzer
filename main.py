@@ -42,8 +42,8 @@ def main():
              2:Mangas_Scraping,
              3:Novels_Scraping}
             
-    user = input("\033[1m .Porfavor digite el nombre de usuario para acceder a la pagina:\n\033[0m ")
-    password = input("\033[1m .Porfavor digite la contraseña de la pagina:\n\033[0m ")
+    user = input("\033[1m Porfavor digite el nombre de usuario para acceder a la pagina:\n\033[0m ")
+    password = input("\033[1m Porfavor digite la contraseña de la pagina:\n\033[0m ")
     args = [user,password]
     if(x==2):
         idiom = define_idiom()

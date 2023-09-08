@@ -44,7 +44,7 @@ class Base_Scraping(ABC):
             options = webdriver.ChromeOptions()
             options.add_argument("--disable-images")
             options.add_argument('--pageLoadStrategy=none')
-            self.driver = uc.Chrome(headless=True, log_level=1, options=options)
+            self.driver = uc.Chrome(headless=json_data["headless"], log_level=1, options=options)
             try:
                 self.driver.set_page_load_timeout(5)
             except Exception as e:

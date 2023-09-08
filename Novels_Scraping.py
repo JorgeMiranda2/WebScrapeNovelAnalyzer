@@ -108,12 +108,13 @@ class Novels_Scraping(Base_Scraping):
         try:
             self.soup = BeautifulSoup(self.driver.page_source, "html.parser") 
             elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@id='cssmenu']/ul[not(@class)]/li/a")))
+            list_names = [element.text.strip() for element in elements_works]
             elements_works = [work.get_attribute("href") for work in elements_works]
             work_links = elements_works[1:]
             print("sections charged")
             print(work_links)
             
-            for i, link in enumerate(work_links):
+            for i, (link,list_name) in enumerate(zip(work_links,list_names)):
                 
                 try:
                     try:
@@ -121,7 +122,7 @@ class Novels_Scraping(Base_Scraping):
                     except TimeoutException as e:
                         print("Page load Timeout Occured ... moving to next item !!!")
                         time.sleep(2)
-                    self.browse_work_pages()
+                    self.browse_work_pages(list_name)
                     print("alcanza")
                     # Actualizar la lista de elementos después de volver atrás
                     elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@id='cssmenu']/ul[not(@class)]/li/a")))
@@ -140,7 +141,7 @@ class Novels_Scraping(Base_Scraping):
 # Resto de tu código
 
                 
-    def browse_work_pages(self):
+    def browse_work_pages(self, list_name):
         try:
             print("Trying to get elements from every work in the list")
             # Obtener todas las URL de los trabajos
@@ -157,7 +158,7 @@ class Novels_Scraping(Base_Scraping):
                     print("Page load Timeout Occured ... moving to next item !!!")
                     
                     
-                self.do_web_scraping()
+                self.do_web_scraping(list_name)
                 try:
                     self.driver.back()
                 except TimeoutException as e:
@@ -168,7 +169,7 @@ class Novels_Scraping(Base_Scraping):
             print(f"Something went wrong when going through works pages: {e}")
             
             
-    def do_web_scraping(self):
+    def do_web_scraping(self, list_name):
         try: 
             self.soup = BeautifulSoup(self.driver.page_source, "html.parser")
             self.data.append({
@@ -179,7 +180,8 @@ class Novels_Scraping(Base_Scraping):
             "Tags":self.obtain_tags(),
             "Genres":self.obtain_genres(),
             "Year":self.obtain_year(),
-            "Rating":self.obtain_rating()
+            "Rating":self.obtain_rating(),
+            "ListName":list_name
             })
         except Exception as e:
             print(f"An error has occurred during web scraping: {e}")

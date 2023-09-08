@@ -27,7 +27,7 @@ class Mangas_Scraping(Base_Scraping):
     # get the work title
     def obtain_title(self):
         element_text = self.soup.find("h1", class_="element-title my-2")
-        element_text = ''.join(element_text.find_all(text=True, recursive=False))
+        element_text = ''.join(element_text.find_all(text=True, recursive=False)).strip()
         print(element_text)
         return element_text
     
@@ -110,25 +110,19 @@ class Mangas_Scraping(Base_Scraping):
         self.browse_sections_list()
         
         
-    def browse_part_list(self):
+    def browse_part_list(self, list_name):
         
         while True:
             try:
+                self.browse_work_pages(list_name)
                 # Obtener todos los elementos <a> dentro del <nav> con class="flex justify-between"
-                elements = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//nav[@class='flex justify-between']/a")))
-                self.browse_work_pages()
+                #elements = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//nav[@class='flex justify-between']//a")))
                 # Iterar a través de los elementos y buscar el que tiene rel="next"
-                for element in elements:
-                    if element.get_attribute("rel") == "next":
-                        element.click()
-                        time.sleep(1)
-                        break  # Salir del bucle después de hacer clic en el elemento con rel="next"
-                else:
-                    print("Not found next button")
-                    break  # Salir del bucle principal si no se encuentra ningún elemento con rel="next"
-                
-            except:
-                print("Ocurrió un error o se alcanzó el final de la paginación")
+                next_button = self.wait.until(ec.presence_of_element_located((By.XPATH, "//nav[@class='flex justify-between']//a[@rel='next']")))
+                next_button.click()
+                time.sleep(1)
+            except Exception as e:
+                print(f"Ocurrió un error o se alcanzó el final de la paginación:  {e}"  )
                 break
 
         
@@ -164,28 +158,29 @@ class Mangas_Scraping(Base_Scraping):
             time.sleep(1)
             self.soup = BeautifulSoup(self.driver.page_source, "html.parser") 
             elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@class='d-flex element-header-bar-elements flex-row flex-wrap align-items-center']/div/a")))
+            list_names = [element.text.strip() for element in elements_works]
             work_links = [work.get_attribute("href") for work in elements_works]
             
             print("sections charged")
           
             
-            for i, link in enumerate(work_links):
+            for i, (link,list_name) in enumerate(zip(work_links,list_names)):
                 print(len(work_links))
                 try:
                     try:
                         self.driver.get(link)
                     except TimeoutException as e:
                         print("Timeout, next item  !!!")
-                        
-                    
+                    print(list_name)
+                    list_name = list_name.split("\n")
+                    print(list_name)
+                    list_name = list_name[1]
                     #self.browse_work_pages()
-                    self.browse_part_list()
+                    self.browse_part_list(list_name)
                     print("alcanza")
                     # Actualizar la lista de elementos después de volver atrás
                     elements_works = self.wait.until(ec.presence_of_all_elements_located((By.XPATH, "//div[@class='d-flex element-header-bar-elements flex-row flex-wrap align-items-center']/div/a")))
                     elements_works = [work.get_attribute("href") for work in elements_works]
-                    
-                    
                     
                 except StaleElementReferenceException:
                     # Manejar la excepción StaleElementReferenceException y continuar con el siguiente enlace
@@ -198,7 +193,7 @@ class Mangas_Scraping(Base_Scraping):
 # Resto de tu código
 
                 
-    def browse_work_pages(self):
+    def browse_work_pages(self, list_name):
         try:
             print("Trying to get elements from every work in the list")
             # Obtener todas las URL de los trabajos
@@ -213,8 +208,8 @@ class Mangas_Scraping(Base_Scraping):
                     print("Page load Timeout Occured ... moving to next item !!!")
                     time.sleep(1)
                     
-                self.do_web_scraping()
-                time.sleep(5)
+                self.do_web_scraping(list_name)
+                time.sleep(4)
                 try:
                     self.driver.back()
                 except TimeoutException as e:
@@ -227,7 +222,7 @@ class Mangas_Scraping(Base_Scraping):
             print("Something went wrong when going through works pages")
             
             
-    def do_web_scraping(self):
+    def do_web_scraping(self, list_name):
         try: 
             self.soup = BeautifulSoup(self.driver.page_source, "html.parser")
             self.data.append({
@@ -239,6 +234,7 @@ class Mangas_Scraping(Base_Scraping):
             "Demography":self.obtain_demography(),
             "Genres":self.obtain_genres(),
             "Year":self.obtain_year(),
+            "List":list_name
             })
         except Exception as e:
             print(f"An error has occurred during web scraping: {e}")
