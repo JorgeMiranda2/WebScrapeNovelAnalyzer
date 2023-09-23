@@ -32,6 +32,6 @@
     "timeout_seconds": 10
     },
 "debug_mode": false,
-"headless":false
+"headless":true
 }
 
