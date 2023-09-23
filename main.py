@@ -1,5 +1,6 @@
 from Novels_Scraping import Novels_Scraping
 from Mangas_Scraping import Mangas_Scraping
+from Animes_Scraping import Animes_Scraping
 def main():
     
     def define_idiom():
@@ -40,7 +41,7 @@ def main():
             
     options={1: Novels_Scraping,
              2:Mangas_Scraping,
-             3:Novels_Scraping}
+             3:Animes_Scraping}
             
     user = input("\033[1m Porfavor digite el nombre de usuario para acceder a la pagina:\n\033[0m ")
     password = input("\033[1m Porfavor digite la contraseña de la pagina:\n\033[0m ")
@@ -48,6 +49,7 @@ def main():
     if(x==2):
         idiom = define_idiom()
         args.append(idiom)
+        
     
     
 

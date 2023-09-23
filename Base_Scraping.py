@@ -41,22 +41,23 @@ class Base_Scraping(ABC):
     def connect(self):
         try:
             print("Connecting...")
+            print(self.url_library)
             options = webdriver.ChromeOptions()
             options.add_argument("--disable-images")
             options.add_argument('--pageLoadStrategy=none')
             self.driver = uc.Chrome(headless=json_data["headless"], log_level=1, options=options)
             try:
-                self.driver.set_page_load_timeout(5)
+                self.driver.set_page_load_timeout(7)
             except Exception as e:
                 print(e)
-      
+            
             try:
-                    self.driver.get(self.url_library)  # Volver a la página del trabajo
+                self.driver.get(self.url_library)  # Volver a la página del trabajo
             except TimeoutException as e:
                 print("Page load Timeout Occured ... moving to next item !!!")
                 time.sleep(2)
             
-          
+            self.driver.implicitly_wait(5)
             self.wait = WebDriverWait(self.driver, 3)
             print("Connected")
         except KeyError as e:
@@ -78,10 +79,10 @@ class Base_Scraping(ABC):
             print("not Checked")
             return False
                   
-    def go_to_list(self):
+    def go_to_list(self, profile_name=""):
         print("entering in list")
         try:
-            self.driver.get(self.list_path)  # Volver a la página del trabajo
+            self.driver.get(f"{self.list_path}{profile_name}")  # Volver a la página del trabajo
         except TimeoutException as e:
             print("Page load Timeout Occured ... moving to next item !!!")
             time.sleep(2)
@@ -89,7 +90,6 @@ class Base_Scraping(ABC):
        
                   
     def go_to_page(self):
-        self.driver.execute_script("setTimeout(function() { window.stop(); }, 2000);") 
         try:
             self.driver.get(self.url_library)  # Volver a la página del trabajo
         except TimeoutException as e:

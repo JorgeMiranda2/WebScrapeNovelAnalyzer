@@ -211,7 +211,7 @@ class Novels_Scraping(Base_Scraping):
                     if (not e.is_selected()):
                         e.click()
                     time.sleep(1)   
-                    e = self.wait.until(ec.element_to_be_clickable((By.CSS_SELECTOR, "input[name='wp-submit']")))
+                    e = self.wait.until(ec.element_to_be_clickable((By.CSS_SELECTOR, "input[@name='wp-submit']")))
                     e.click() 
                     self.save_cookies()
                     break
