@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mysqlc:
+    image: mysql
+    ports:
+      - "13306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+    volumes:
+     - ./LoginDataDB/Data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  loginback:
+    build: ./LoginBackend
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysqlc:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqlc:3306/LoginDB?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=mysql
+    links:
+      - mysqlc
+
+  loginfront:
+    build: ./LoginFrontend
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
+    env_file:
+      - ./LoginFrontend/.env
+    ports:
+      - "80:80"
+    links:
+      - loginback
+

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="319b32be-d29e-4ba3-8e05-0795b915d13e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.log.2024-06-12.0.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.log.2024-06-13.0.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Configs/CacheConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Controllers/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Controllers/PermissionController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Controllers/PersonController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Controllers/PublicController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Controllers/RoleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Dtos/AccessResponseDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Dtos/AccountDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Dtos/AddRoleToUserDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Dtos/ApiResponseDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Dtos/IdentificationTypesDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Dtos/LoginDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Dtos/PermissionDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/LoginApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Models/IdentificationType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Models/Permission.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Models/Person.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Models/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Models/State.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Models/StateType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Models/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Models/UserRole.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Repositories/IIdentificationType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Repositories/IPermission.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Repositories/IPerson.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Repositories/IRole.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Repositories/IState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Repositories/IStateType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Repositories/IUser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Repositories/IUserRole.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Security/JwtAuthenticationEntrypoint.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Security/JwtAuthenticationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Security/JwtAuthenticationProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Security/SecurityConstants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Security/WebSecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Services/AuthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Services/DataInitializationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Services/IdentificationTypeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Services/PermissionService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Services/PersonService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Services/RoleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Services/StateService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Services/UserRoleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Services/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/ServletInitializer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Login/Login/Utils/ResponseUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/Login/Login/LoginApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/.env" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/.eslintrc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/next.config.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/nginx.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/postcss.config.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/public/next.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/public/vercel.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/lib/API/Get.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/lib/API/Post.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/lib/API/api.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/lib/Interfaces/LoginResponse.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/lib/Interfaces/auth.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/lib/Services/AuthService.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/lib/Utils/AuthContext.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/lib/Utils/GetInitialConfig.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/lib/Utils/GetSession.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/login/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/register/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/ui/LoginForm.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/ui/LogoutButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/ui/NavBar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/src/app/ui/NavBarAuthComponent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/tailwind.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LoginFrontend/variables.mjs" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package-info" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2iwacPR7LFTZ4iLUEcFIDmQfikN" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.LoginApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.com.SeriesAnalyzer.main.LoginApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dockerize&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/USUARIO/Desktop/Proyects/Login/LoginBackend&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.SeriesAnalyzer.main.Configs" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="com.SeriesAnalyzer.main.LoginApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.SeriesAnalyzer.main.LoginApplication" />
+      <module name="Login" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.Login.Login.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.com.SeriesAnalyzer.main.LoginApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="319b32be-d29e-4ba3-8e05-0795b915d13e" name="Changes" comment="" />
+      <created>1720404172148</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1720404172148</updated>
+    </task>
+    <servers />
+  </component>
+</project>
