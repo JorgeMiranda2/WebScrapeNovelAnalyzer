@@ -3,6 +3,9 @@ package com.SeriesAnalyzer.main.Models.Series;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -21,5 +24,8 @@ public class Tag {
 
     @Column(name = "description", nullable = false, length = 300)
     private String description;
+
+    @ManyToMany(mappedBy = "tags")
+    private List<Novel> novels = new ArrayList<>();
 
 }

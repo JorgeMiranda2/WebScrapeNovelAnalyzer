@@ -3,6 +3,9 @@ package com.SeriesAnalyzer.main.Models.Series;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -21,5 +24,10 @@ public class Genre {
 
     @Column(name = "description", nullable = false, length = 300)
     private String description;
+
+
+    @ManyToMany(mappedBy = "genres")
+    private List<Work> works = new ArrayList<>();
+
 
 }

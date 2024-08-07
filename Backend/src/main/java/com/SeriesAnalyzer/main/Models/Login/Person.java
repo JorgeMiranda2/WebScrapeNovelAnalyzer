@@ -35,8 +35,10 @@ public class Person {
     @Column(name = "identification")
     private String identification;
 
-    @Column(name = "type_identification")
-    private String typeIdentification;
+    //@Column(name = "type_identification")
+    @ManyToOne
+    @JoinColumn(name = "type_identification", referencedColumnName = "id")
+    private IdentificationType identificationType;
 
     @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
     private User user;

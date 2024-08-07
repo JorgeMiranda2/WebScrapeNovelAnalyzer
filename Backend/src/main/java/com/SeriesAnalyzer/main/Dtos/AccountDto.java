@@ -23,7 +23,7 @@ public class AccountDto {
 
     private String identification;
 
-    private String typeIdentification;
+    private String identificationTypeId;
 
     //User
 

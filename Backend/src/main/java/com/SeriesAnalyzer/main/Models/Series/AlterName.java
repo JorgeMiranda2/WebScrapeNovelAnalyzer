@@ -11,6 +11,7 @@ import lombok.*;
 @Builder
 @Table(name="alter_name")
 public class AlterName {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,4 +23,5 @@ public class AlterName {
     @Column(name = "synopsis", nullable = false, length = 300)
     private String synopsis;
 
+    
 }

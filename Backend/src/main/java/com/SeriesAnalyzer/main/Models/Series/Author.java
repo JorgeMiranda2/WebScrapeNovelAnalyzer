@@ -1,7 +1,11 @@
 package com.SeriesAnalyzer.main.Models.Series;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +22,11 @@ public class Author {
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "author")
+    private List<Work> works = new ArrayList<>();
+
 
 
 }

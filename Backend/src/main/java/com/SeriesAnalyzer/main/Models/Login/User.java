@@ -1,9 +1,7 @@
 package com.SeriesAnalyzer.main.Models.Login;
 
-import com.SeriesAnalyzer.main.Models.Series.Adaptation;
-import com.SeriesAnalyzer.main.Models.Series.Anime;
-import com.SeriesAnalyzer.main.Models.Series.Manga;
-import com.SeriesAnalyzer.main.Models.Series.Novel;
+
+import com.SeriesAnalyzer.main.Models.Series.UserWork;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,10 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
@@ -50,29 +45,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_adaptation",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "adaptation_id")
-    )
-    private List<Anime> animes;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserWork> userWorks = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_adaptation",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "adaptation_id")
-    )
-    private List<Manga> mangas;
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_adaptation",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "adaptation_id")
-    )
-    private List<Novel> novels;
 
 
     @Override

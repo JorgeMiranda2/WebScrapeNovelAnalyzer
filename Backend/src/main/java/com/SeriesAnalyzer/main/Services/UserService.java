@@ -5,12 +5,16 @@ import com.SeriesAnalyzer.main.Dtos.AccountDto;
 import com.SeriesAnalyzer.main.Repositories.Login.*;
 import com.SeriesAnalyzer.main.Models.Login.*;
 import jakarta.transaction.Transactional;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +41,24 @@ public class UserService {
     @Autowired
     private IRole roleRepository;
 
+    @Autowired
+    private IdentificationTypeService identificationTypeService;
+
+
+
+    public Optional<User> getUserFromUsername(String username){
+        return userRepository.getUserFromUsername(username);
+    }
+
+    public Optional<User> getUserFromToken(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return Optional.empty();
+        }
+        String username = authentication.getName();
+        return getUserFromUsername(username);
+    }
+
     @Transactional
     public HashMap<String, Object> registerUserAndPerson(AccountDto accountDto, String role) {
         try {
@@ -49,6 +71,14 @@ public class UserService {
 
             State activeState = optionalActiveState.get();
 
+            /*
+            Optional<Long> identificationTypeId = identificationTypeService.getIdentificationTypeByName(accountDto.getIdentificationType());
+
+            if(identificationTypeId.isEmpty()){
+                throw new NoSuchElementException("Identification Type not found");
+            }
+
+             */
             // Crear la entidad Person con el builder
             Person person = Person.builder()
                     .name(accountDto.getName())
@@ -56,7 +86,7 @@ public class UserService {
                     .email(accountDto.getEmail())
                     .birthdate(accountDto.getBirthdate())
                     .identification(accountDto.getIdentification())
-                    .typeIdentification(accountDto.getTypeIdentification())
+                    .identificationType(IdentificationType.builder().id(Long.parseLong(accountDto.getIdentificationTypeId())).build())
                     .build();
 
             // Obtener Rol por defecto

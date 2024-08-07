@@ -1,8 +1,13 @@
 package com.SeriesAnalyzer.main.Models.Login;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +30,8 @@ public class IdentificationType {
     @ManyToOne
     @JoinColumn(name = "state_id", referencedColumnName = "id", nullable = false)
     private State state;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "identificationType")
+    private Set<Person> people = new HashSet<>();
 }

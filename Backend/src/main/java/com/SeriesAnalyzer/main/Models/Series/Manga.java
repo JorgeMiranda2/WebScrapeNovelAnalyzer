@@ -1,10 +1,11 @@
 package com.SeriesAnalyzer.main.Models.Series;
 
 
-import com.SeriesAnalyzer.main.Models.Login.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,17 +16,23 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("manga")
 @Table(name = "manga")
-public class Manga extends Adaptation{
+public class Manga extends Work{
     @Column(name = "rating")
-    private String rating;
+    private float rating = 0;
 
     @Column(name="year")
     private String year;
 
     @Column(name="demography")
-    private String demography;
+    private String demography = "unknown";
 
-    @ManyToMany(mappedBy = "adaptations")
-    private List<User> users;
+    @Column(name="image_route")
+    private String imageRoute = "";
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "status_of_work_id", referencedColumnName = "id", nullable = false)
+    private StatusOfWork statusOfWork;
+
 
 }
