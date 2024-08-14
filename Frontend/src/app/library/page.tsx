@@ -35,12 +35,18 @@
         }, []);
 
         useEffect(() => {
-            console.log("llamando: " +currentPage)
-            if (paramsLoaded) {
-                // Solo llamar a getWorks si los parámetros han sido cargados
-                getWorks(workType, currentPage-1);
+            console.log("llamando: " + currentPage);
+            if (!paramsLoaded) {
+                return;
             }
-        }, [ currentPage,workType, paramsLoaded]); 
+
+            if(search == ""){
+                getWorks(workType, currentPage-1);
+            } else {
+                getWorksBySearch(search, currentPage-1);
+            }
+           
+        }, [ currentPage,workType,paramsLoaded]); 
 
       
 
@@ -64,14 +70,18 @@
 
         const handleWorkType = (workTypeId: number) => {
             setWorkType(workTypeId);
+            setSearch("");
             setCurrentPage(1);
-            updateUrlParams({ workType: workTypeId, page: 1 });
+            updateUrlParams({ workType: workTypeId, page: 1, search:"" });
         };
 
         const handleSearch = () => {
-            getWorksBySearch(search);
-            updateUrlParams({ search: search });
+            setCurrentPage(1)
+            getWorksBySearch(search, currentPage);
+            updateUrlParams({ search: search, page:currentPage });
         }
+
+        
 
         return (
             <div className="library-body">
@@ -90,6 +100,7 @@
                             <input 
                                 type="text" 
                                 value={search} 
+                                style={{color:"black"}}
                                 onChange={(e) => {
                                     setSearch(e.target.value);
                                     updateUrlParams({ search: e.target.value });
@@ -120,7 +131,7 @@
                                 breakLabel={'...'}
                                 breakClassName={'break-me'}
                                 activeClassName={'active'}
-                                initialPage={currentPage}
+                                initialPage={currentPage-1}
                                 pageCount={pageInfo?.totalPages || 1}
                                 marginPagesDisplayed={2}
                                 pageRangeDisplayed={5}

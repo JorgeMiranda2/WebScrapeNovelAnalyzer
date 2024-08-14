@@ -106,12 +106,54 @@ public class WorkRepositoryCustomImpl implements WorkRepositoryCustom{
 
         List<WorkDto> content = query.getResultList();
 
-        String countJpql = "SELECT COUNT(w.id) FROM Work w WHERE LOWER(w.name) = LOWER(:search)";
+        String countJpql = "SELECT COUNT(w.id) FROM Work w WHERE LOWER(w.name) LIKE LOWER(CONCAT('%', :search, '%'))";
         TypedQuery<Long> countQuery = entityManager.createQuery(countJpql, Long.class);
         countQuery.setParameter("search", search);
         long total = countQuery.getSingleResult();
 
+        System.out.println("total:" + total);
+
         return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<WorkDto> getAllWorksByUserId(Long userId, Pageable pageable) {
+        String jpql = "SELECT new com.SeriesAnalyzer.main.Dtos.WorkDto(" +
+                "w.id, w.name, " +
+                "CASE TYPE(w) " +
+                "WHEN Anime THEN a.imageRoute " +
+                "WHEN Manga THEN m.imageRoute " +
+                "WHEN Novel THEN n.imageRoute " +
+                "END, " +
+                "CASE TYPE(w) " +
+                "WHEN Anime THEN 'Anime' " +
+                "WHEN Manga THEN 'Manga' " +
+                "WHEN Novel THEN 'Novel' " +
+                "END)" +
+                "FROM UserWork uw " +
+                "JOIN uw.work w " +
+                "LEFT JOIN Anime a ON w.id = a.id " +
+                "LEFT JOIN Manga m ON w.id = m.id " +
+                "LEFT JOIN Novel n ON w.id = n.id " +
+                "WHERE uw.user.id = :userId";
+
+        TypedQuery<WorkDto> query = entityManager.createQuery(jpql, WorkDto.class);
+        query.setParameter("userId", userId);
+        query.setFirstResult((int) pageable.getOffset());
+        query.setMaxResults(pageable.getPageSize());
+
+        List<WorkDto> workDtos = query.getResultList();
+
+        String countQueryStr = "SELECT COUNT(uw.id) " +
+                "FROM UserWork uw " +
+                "WHERE uw.user.id = :userId";
+
+        TypedQuery<Long> countQuery = entityManager.createQuery(countQueryStr, Long.class);
+        countQuery.setParameter("userId", userId);
+
+        Long total = countQuery.getSingleResult();
+
+        return new PageImpl<>(workDtos, pageable, total);
     }
 
 }

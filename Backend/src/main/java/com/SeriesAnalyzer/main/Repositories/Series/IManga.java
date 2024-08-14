@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface IManga extends JpaRepository<Manga, Long> {
     @Query("SELECT m FROM Manga m JOIN m.userWorks uw WHERE uw.user.id = :userId")
-    List<Manga> findByUserId(@Param("userId") Long userId);
+    Page<Manga> findByUserId(@Param("userId") Long userId, Pageable pageable);
 
     @Query("SELECT COUNT(m) > 0 FROM Manga m WHERE LOWER(m.name) = LOWER(:nameWork)")
     Boolean existsByName(@Param("nameWork") String nameWork);

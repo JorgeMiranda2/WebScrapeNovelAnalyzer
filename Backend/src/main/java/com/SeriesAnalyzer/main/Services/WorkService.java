@@ -4,10 +4,7 @@ import com.SeriesAnalyzer.main.Dtos.UserWorkTypeScrap;
 import com.SeriesAnalyzer.main.Dtos.WorkDto;
 import com.SeriesAnalyzer.main.Models.Login.User;
 import com.SeriesAnalyzer.main.Models.Series.*;
-import com.SeriesAnalyzer.main.Repositories.Series.IAnime;
-import com.SeriesAnalyzer.main.Repositories.Series.IManga;
-import com.SeriesAnalyzer.main.Repositories.Series.INovel;
-import com.SeriesAnalyzer.main.Repositories.Series.IWork;
+import com.SeriesAnalyzer.main.Repositories.Series.*;
 import com.SeriesAnalyzer.main.Utils.WorkMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,6 +34,7 @@ public class WorkService {
     private MangaService mangaService;
     @Autowired
     private NovelService novelService;
+
 
     @Autowired
     private IWork workRepository;
@@ -100,15 +98,15 @@ public class WorkService {
         return false;
     }
 
-    public List<? extends Work> getWorksByUserIdAndType(Long userId, Class<? extends Work> workType) {
+    public Page<? extends Work> getWorksByUserIdAndType(Long userId, Class<? extends Work> workType, Pageable pageable) {
 
 
         if (workType == Anime.class) {
-            return animeRepository.findByUserId(userId);
+            return animeRepository.findByUserId(userId, pageable);
         } else if (workType == Manga.class) {
-            return mangaRepository.findByUserId(userId);
+            return mangaRepository.findByUserId(userId, pageable);
         } else if (workType == Novel.class) {
-            return novelRepository.findByUserId(userId);
+            return novelRepository.findByUserId(userId, pageable);
         } else {
             throw new IllegalArgumentException("Invalid work type: " + workType);
         }
@@ -124,6 +122,8 @@ public class WorkService {
     }
 
 
+    public Page<WorkDto> getAllWorksByUserId(Long id, Pageable pageable) {
+        return workRepository.getAllWorksByUserId(id,pageable);
 
-
+    }
 }

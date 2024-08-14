@@ -14,7 +14,8 @@ import java.util.Optional;
 @Repository
 public interface IAnime extends JpaRepository<Anime, Long> {
     @Query("SELECT a FROM Anime a JOIN a.userWorks uw WHERE uw.user.id = :userId")
-    List<Anime> findByUserId(@Param("userId") Long userId);
+    Page<Anime> findByUserId(@Param("userId") Long userId, Pageable pageable);
+
 
 
     @Query("SELECT a FROM Anime a WHERE a.name = :title")

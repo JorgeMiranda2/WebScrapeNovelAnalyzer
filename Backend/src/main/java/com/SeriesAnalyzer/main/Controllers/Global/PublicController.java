@@ -1,4 +1,4 @@
-package com.SeriesAnalyzer.main.Controllers.Login;
+package com.SeriesAnalyzer.main.Controllers.Global;
 
 
 
@@ -94,7 +94,7 @@ public class PublicController {
     }
 
     @Transactional
-    @PostMapping("get-works/search/{name}")
+    @GetMapping("get-works/search/{name}")
     public ResponseEntity<Page<WorkDto>> getWorksByName(@PathVariable String name,
                                                         @RequestParam(defaultValue = "0") int numberPage,
                                                         @RequestParam(defaultValue = "25") int itemsPerPage){

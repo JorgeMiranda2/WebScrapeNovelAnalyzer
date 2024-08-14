@@ -10,5 +10,7 @@ public interface WorkRepositoryCustom {
     List<WorkDto> findAllWorksWithImageRoute();
     Page<WorkDto> findAllWorksWithImageRoute(Pageable pageable);
     Page<WorkDto> findAllWorksWithImageRouteAndSearch(String search,Pageable pageable);
+    Page<WorkDto> getAllWorksByUserId(Long id, Pageable pageable);
+
 
 }
